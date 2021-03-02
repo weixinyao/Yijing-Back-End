@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.dao.CollectMapper" >
+  <resultMap id="BaseResultMap" type="com.example.model.Collect" >
+    <id column="collectid" property="collectid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="goodid" property="goodid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    collectid, userid, goodid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from j_collect
+    where collectid = #{collectid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from j_collect
+    where collectid = #{collectid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.Collect" >
+    insert into j_collect (collectid, userid, goodid
+      )
+    values (#{collectid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{goodid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.Collect" >
+    insert into j_collect
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="collectid != null" >
+        collectid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="goodid != null" >
+        goodid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="collectid != null" >
+        #{collectid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="goodid != null" >
+        #{goodid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.Collect" >
+    update j_collect
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="goodid != null" >
+        goodid = #{goodid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where collectid = #{collectid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.Collect" >
+    update j_collect
+    set userid = #{userid,jdbcType=INTEGER},
+      goodid = #{goodid,jdbcType=INTEGER}
+    where collectid = #{collectid,jdbcType=INTEGER}
+  </update>
+  <select id="getcollectbyuserid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from j_collect
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+</mapper>

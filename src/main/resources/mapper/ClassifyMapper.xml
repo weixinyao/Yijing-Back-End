@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.dao.ClassifyMapper" >
+  <resultMap id="BaseResultMap" type="com.example.model.Classify" >
+    <id column="classifyid" property="classifyid" jdbcType="INTEGER" />
+    <result column="goodid" property="goodid" jdbcType="INTEGER" />
+    <result column="classifyname" property="classifyname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    classifyid, goodid, classifyname
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from j_classify
+    where classifyid = #{classifyid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from j_classify
+    where classifyid = #{classifyid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.Classify" >
+    insert into j_classify (classifyid, goodid, classifyname
+      )
+    values (#{classifyid,jdbcType=INTEGER}, #{goodid,jdbcType=INTEGER}, #{classifyname,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.Classify" >
+    insert into j_classify
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classifyid != null" >
+        classifyid,
+      </if>
+      <if test="goodid != null" >
+        goodid,
+      </if>
+      <if test="classifyname != null" >
+        classifyname,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="classifyid != null" >
+        #{classifyid,jdbcType=INTEGER},
+      </if>
+      <if test="goodid != null" >
+        #{goodid,jdbcType=INTEGER},
+      </if>
+      <if test="classifyname != null" >
+        #{classifyname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.Classify" >
+    update j_classify
+    <set >
+      <if test="goodid != null" >
+        goodid = #{goodid,jdbcType=INTEGER},
+      </if>
+      <if test="classifyname != null" >
+        classifyname = #{classifyname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where classifyid = #{classifyid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.Classify" >
+    update j_classify
+    set goodid = #{goodid,jdbcType=INTEGER},
+      classifyname = #{classifyname,jdbcType=VARCHAR}
+    where classifyid = #{classifyid,jdbcType=INTEGER}
+  </update>
+  <select id="getallclassify" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from j_classify
+  </select>
+</mapper>

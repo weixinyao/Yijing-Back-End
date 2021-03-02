@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.dao.OrderMapper" >
+  <resultMap id="BaseResultMap" type="com.example.model.Order" >
+    <id column="orderid" property="orderid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="goodid" property="goodid" jdbcType="INTEGER" />
+    <result column="buynumber" property="buynumber" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    orderid, userid, goodid, buynumber, createtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from j_order
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from j_order
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.Order" >
+    insert into j_order (orderid, userid, goodid, 
+      buynumber, createtime)
+    values (#{orderid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{goodid,jdbcType=INTEGER}, 
+      #{buynumber,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.Order" >
+    insert into j_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="goodid != null" >
+        goodid,
+      </if>
+      <if test="buynumber != null" >
+        buynumber,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="goodid != null" >
+        #{goodid,jdbcType=INTEGER},
+      </if>
+      <if test="buynumber != null" >
+        #{buynumber,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.Order" >
+    update j_order
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="goodid != null" >
+        goodid = #{goodid,jdbcType=INTEGER},
+      </if>
+      <if test="buynumber != null" >
+        buynumber = #{buynumber,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.Order" >
+    update j_order
+    set userid = #{userid,jdbcType=INTEGER},
+      goodid = #{goodid,jdbcType=INTEGER},
+      buynumber = #{buynumber,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=TIMESTAMP}
+    where orderid = #{orderid,jdbcType=INTEGER}
+  </update>
+  <select id="getOrderByuserid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from j_order
+    where userid = #{userid,jdbcType=INTEGER}
+  </select>
+  <select id="getallorder" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from j_order
+  </select>
+  <select id="getfiveorder" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from j_order where to_days(createtime) = to_days(now()) ORDER BY buynumber limit 5
+  </select>
+  <select id="getnowordernumber" resultType="java.lang.Integer">
+    select COUNT(*)  from j_order where to_days(createtime) = to_days(now())
+  </select>
+  <select id="getyesterdayordernumber" resultType="java.lang.Integer">
+    select COUNT(*) as j_order from j_order where to_days(now())-to_days(createtime) &lt;= 1
+  </select>
+  <select id="getnearsevenordernumber" resultType="java.lang.Integer">
+    select COUNT(*) as 7days from j_order where date_sub(curdate(), interval 7 day) &lt;= date(createtime)
+  </select>
+  <select id="getnearthirtyordernumber" resultType="java.lang.Integer">
+    select COUNT(*) as 30days from j_order where date_sub(curdate(), interval 30 day) &lt;= date(createtime)
+  </select>
+  <select id="getquarterordernumber" resultType="java.lang.Integer">
+    select COUNT(*) as ThisQuarter from j_order where QUARTER(createtime)=QUARTER(now())
+  </select>
+</mapper>

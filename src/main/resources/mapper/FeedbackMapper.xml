@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.dao.FeedbackMapper" >
+  <resultMap id="BaseResultMap" type="com.example.model.Feedback" >
+    <id column="feedbackid" property="feedbackid" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="INTEGER" />
+    <result column="feedbackcontent" property="feedbackcontent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    feedbackid, userid, feedbackcontent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from j_feedback
+    where feedbackid = #{feedbackid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from j_feedback
+    where feedbackid = #{feedbackid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.Feedback" >
+    insert into j_feedback (feedbackid, userid, feedbackcontent
+      )
+    values (#{feedbackid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{feedbackcontent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.Feedback" >
+    insert into j_feedback
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="feedbackid != null" >
+        feedbackid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="feedbackcontent != null" >
+        feedbackcontent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="feedbackid != null" >
+        #{feedbackid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="feedbackcontent != null" >
+        #{feedbackcontent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.Feedback" >
+    update j_feedback
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="feedbackcontent != null" >
+        feedbackcontent = #{feedbackcontent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where feedbackid = #{feedbackid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.Feedback" >
+    update j_feedback
+    set userid = #{userid,jdbcType=INTEGER},
+      feedbackcontent = #{feedbackcontent,jdbcType=VARCHAR}
+    where feedbackid = #{feedbackid,jdbcType=INTEGER}
+  </update>
+  <select id="findallfeedback" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from j_feedback
+  </select>
+</mapper>
